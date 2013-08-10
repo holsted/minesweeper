@@ -360,10 +360,9 @@ $(document).ready(function(){
       }
     }
 
-  // define our new instance of minesweeper
+ 
   var minesweeper = new Minesweeper();
  
- // and initialize it with some basic options
   minesweeper.init({
     boardSize: [8, 8],
     difficulty: 'easy'
