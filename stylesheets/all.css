@@ -1,0 +1,240 @@
+@charset "utf-8";
+
+body {
+  background-color: #444;
+  text-align: center;
+  font-family: sans-serif; }
+
+h1 {
+  color: rgba(0, 0, 0, .6);
+  font-size: 32px;
+  letter-spacing: -1px;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, .2);
+  padding: 50px 0 10px;
+  margin: 0; }
+
+#board, #minesweeper, .game-buttons {
+  -webkit-animation-name: board;
+  -webkit-animation-duration: .9s; }
+
+@-webkit-keyframes board {
+  from {
+    -webkit-transform: scale(0);
+    opacity: 0;
+  }
+  50% {
+   -webkit-transform: scale(0);
+   opacity: 0;
+  }
+  82.5% {
+    -webkit-transform: scale(1.03);
+    -webkit-animation-timing-function: ease-out;
+    opacity: 1;
+  }
+  to {
+    -webkit-transform: scale(1);
+  }
+}
+@-webkit-keyframes minesweeper {
+  from {
+    -webkit-transform: scale(0);
+    opacity: 0;
+  }
+  50% {
+   -webkit-transform: scale(0);
+   opacity: 0;
+  }
+  82.5% {
+    -webkit-transform: scale(1.03);
+    -webkit-animation-timing-function: ease-out;
+    opacity: 1;
+  }
+  to {
+    -webkit-transform: scale(1);
+  }
+}
+
+@-webkit-keyframes game-buttons {
+  from {
+    -webkit-transform: scale(0);
+    opacity: 0;
+  }
+  50% {
+   -webkit-transform: scale(0);
+   opacity: 0;
+  }
+  82.5% {
+    -webkit-transform: scale(1.03);
+    -webkit-animation-timing-function: ease-out;
+    opacity: 1;
+  }
+  to {
+    -webkit-transform: scale(1);
+  }
+}
+
+#options{
+  width:300px;
+  position:absolute;
+  left:0;
+  background-color: rgba(255, 255, 255, .8);
+  height:100%;
+  text-align:left;
+  padding-left:60px;
+  border-right: 1px solid rgba(0,0,0,.4);
+  box-shadow: 5px 0px 20px rgba(0,0,0,.2);
+}
+#board{
+  margin-left:300px;
+}
+
+#board h1{
+  color:rgba(255,255,255,.9);
+  text-shadow: 1px 1px 2px rgba(0,0,0,.2);
+}
+#minesweeper{
+  width:auto;
+  margin: 3em auto 0 auto;
+  padding-top:10px;
+  background-color:rgba(255,255,255,.1);
+  border: 1px solid rgba(0,0,0,.4);
+  box-shadow: 0px 0px 20px rgba(0,0,0,.2);
+}
+.row{
+  clear:both;
+}
+
+.cell {
+  float:left;
+  width:20px;
+  height:20px;
+  border:1px solid #aaa;
+  background-color:rgba(255,255,255,.8);
+}
+
+.cleared {
+  background-color:#fff;
+}
+
+.flagged {
+  background: #fff url('../images/red_flag.png') no-repeat center;
+}
+
+
+
+#check-me {
+  margin:auto;
+  display:block;
+  padding-bottom:20px;
+  cursor:pointer;
+  overflow:hidden;
+
+}
+
+.cool-smiley {
+   background: url('../images/smiley_cool.png') no-repeat center;
+}
+
+.happy-smiley {
+   background: url('../images/smiley_happy.png') no-repeat center;
+}
+
+.sad-smiley {
+   background: url('../images/smiley_sad.png') no-repeat center;
+}
+
+.mine{
+ 
+}
+
+.show {
+  background: #fff url("../images/mine.png") no-repeat center;
+}
+
+#ui{
+  float:left;
+  width:100%;
+  clear:both;
+  padding-bottom:10px;
+  color:rgba(255,255,255,.8);
+}
+
+#mine-count{
+  float:left;
+  min-width: 60px;
+  cursor:default;
+}
+
+#timer {
+  cursor:default;
+  float:right;
+  min-width:60px;
+}
+
+.number1{
+  color: #0000ff;
+}
+
+.number2{
+  color: #008000;
+}
+
+.number3{
+  color: #ff0000;
+}
+
+.number4{
+  color: #000080;
+}
+
+.number5{
+  color: #800000;
+}
+
+.number6{
+  color: #00FFFF
+}
+.number7{
+  color:#000000;
+}
+.number8{
+  color: #D3D3D3;
+}
+
+
+/* Game Options */
+
+#new-game {
+ padding:4px 8px;
+}
+
+#cheat {
+padding:4px 8px;
+}
+
+.option-button, .option-select{
+  padding-top:30px;
+}
+
+.option-select{
+  clear:both;
+}
+
+.option-button {
+  float:left;
+  padding-right:20px;
+}
+
+.option-input{
+  display: inline-block;
+  margin-top:30px;
+  margin-right:6px;
+}
+
+#options select {
+  margin-left:6px;
+}
+
+.hidden{
+  visibility:hidden;
+}
