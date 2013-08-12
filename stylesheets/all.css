@@ -3,7 +3,10 @@
 body {
   background-color: #444;
   text-align: center;
-  font-family: sans-serif; }
+  font-family: sans-serif; 
+  margin:0;
+  padding:0;
+}
 
 h1 {
   color: rgba(0, 0, 0, .6);
@@ -11,7 +14,12 @@ h1 {
   letter-spacing: -1px;
   text-shadow: 0 1px 0 rgba(255, 255, 255, .2);
   padding: 50px 0 10px;
-  margin: 0; }
+  margin: 0; 
+}
+
+select {
+  cursor: pointer;
+}
 
 #board, #minesweeper, .game-buttons {
   -webkit-animation-name: board;
@@ -108,6 +116,7 @@ h1 {
   float:left;
   width:20px;
   height:20px;
+  line-height:20px;
   border:1px solid #aaa;
   background-color:rgba(255,255,255,.8);
 }
@@ -206,6 +215,7 @@ h1 {
 
 #new-game, #cheat {
   line-height:1.6em;
+  cursor:pointer;
 }
 
 
