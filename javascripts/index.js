@@ -415,3 +415,13 @@ $(document).ready(function(){
     $('#timer').toggleClass('hidden');
   });
 });
+
+$(window).load(function(){
+  //preload images that will be needed later
+  $.fn.preload = function() {
+    this.each(function(){
+        $('<img/>')[0].src = this;
+    });
+  }
+  $(['/images/mine.png','/images/red_flag.png','/images/smiley_cool.png','/images/smiley_happy.png','/images/smiley_sad.png']).preload();
+});
