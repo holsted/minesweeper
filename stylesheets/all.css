@@ -204,13 +204,11 @@ h1 {
 
 /* Game Options */
 
-#new-game {
- padding:4px 8px;
+#new-game, #cheat {
+  line-height:1.6em;
 }
 
-#cheat {
-padding:4px 8px;
-}
+
 
 .option-button, .option-select{
   padding-top:30px;
