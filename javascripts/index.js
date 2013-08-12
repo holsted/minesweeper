@@ -170,8 +170,12 @@ $(document).ready(function(){
       
 
       $('#check-me').on('click', function(){
+        if($(this).hasClass('sad-smiley')){
+          self.reset();
+        }
+        else{
         self.check();
-    
+        }
       });
 
 
@@ -200,8 +204,7 @@ $(document).ready(function(){
 
     this.lock = function(){
       $('.cell').off();
-      $('#check-me').off();
-      $('#check-me').css('cursor', 'default');
+     
     }
 
     this.check = function(){

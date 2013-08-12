@@ -3,7 +3,7 @@ minesweeper
 
 Oh, Minesweeper. We had a good run there for a while didn't we...
 
-This repo contains the source of a Minesweeper game that I made when applying for a job at [Thumbtack][http://www.thumbtack.com/challenges]. There were a few design contraints:
+This repo contains the source of a Minesweeper game that I made when applying for a job at [Thumbtack](http://www.thumbtack.com/challenges). There were a few design contraints:
 
   *  I could use HTML, CSS, and JavaScript (libraries like JQuery or Angular were welcomed). 
 
@@ -18,6 +18,6 @@ This repo contains the source of a Minesweeper game that I made when applying fo
     -  Cheat: I could show the user the location of the mines, in any way I wanted, provided that the game still continued. 
 
 
-The total time on this was supposed to be a couple hours. I went over that, but I also spent some time learning about object oriented Javascript. Anway, had a blast making it. If you want to play, head over to my [my blog][http://fajitanachos.com/Minesweeper].
+The total time on this was supposed to be a couple hours. I went over that, but I also spent some time learning about object oriented Javascript. Anyway, had a blast making it. If you want to play, head over to my [my blog](http://fajitanachos.com/Minesweeper).
 
 
