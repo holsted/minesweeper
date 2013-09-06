@@ -61,8 +61,8 @@ $(document).ready(function(){
       // number of cells to fill out our grid
       for (var i=0; i<=rows-1; i++){
         rowDiv = $('<div/>').attr({
-          'id' : 'row'+i,
-          'class' : 'row'
+          id : 'row'+i,
+          class : 'row'
         }).appendTo($('#minesweeper'));
 
         for (var j=0; j<=columns-1; j++){
@@ -73,9 +73,9 @@ $(document).ready(function(){
           // add the cell to the cells array so we can access it later instead of 
           // looping through the DOM
           cells.push({
-          'hasMine': false,
-          'flagged': false,
-          'cleared': false
+            hasMine: false,
+            flagged: false,
+            cleared: false
           });
         }
       }
@@ -400,7 +400,7 @@ $(document).ready(function(){
 
   $('#difficulty').change(function(){
     minesweeper.init({
-      'difficulty' : $(this).val()
+      difficulty : $(this).val()
     });
   });
 
@@ -414,14 +414,4 @@ $(document).ready(function(){
   $('#show-timer').change(function(){
     $('#timer').toggleClass('hidden');
   });
-});
-
-$(window).load(function(){
-  //preload images that will be needed later
-  $.fn.preload = function() {
-    this.each(function(){
-        $('<img/>')[0].src = this;
-    });
-  }
-  $(['/images/mine.png','/images/red_flag.png','/images/smiley_cool.png','/images/smiley_happy.png','/images/smiley_sad.png']).preload();
 });
