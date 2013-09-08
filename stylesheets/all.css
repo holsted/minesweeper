@@ -28,9 +28,6 @@ select, button {
   cursor: pointer;
 }
 
-
-
-
 #board, #minesweeper, .game-buttons {
   -webkit-animation-name: board;
   -webkit-animation-duration: .9s; }
@@ -114,6 +111,7 @@ select, button {
 
 #board{
   width:100%;
+  padding-bottom:5%;
 }
 
 #board h1{
@@ -137,7 +135,6 @@ select, button {
   text-align:center;
   width:640px;
   margin: 5% auto 0 auto;
-  padding-bottom:5%;
   padding-top:10px;
   background-color:rgba(255,255,255,.1);
   border: 1px solid rgba(0,0,0,.4);
