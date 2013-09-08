@@ -11,35 +11,35 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     
     <link href="stylesheets/all.css" media="screen" rel="stylesheet" type="text/css" />
-    
+    <link href="stylesheets/normalize.css" media="screen" rel="stylesheet" type="text/css" />
     <script src="javascripts/index.js" type="text/javascript"></script>
   </head>
-  
- <div id= "options">
-  <h1>Game Options</h1>
-  <div class = 'option-button'>
-    <button id= "new-game">New Game</button>
+  <div id="option-wrap">
+   <div id= "options">
+    <h1>FajitaNachos</h1>
+      <div id = "new-button" class = 'option-button'>
+        <button id= "new-game">New Game</button>
+      </div>
+    <div class = "option-select">
+      <span class="label">Difficulty</span>
+      <select id="difficulty">
+        <option value="easy">Beginner</option>
+        <option value = "middle">Intermediate</option>
+        <option value = "hard">Expert</option>
+      </select>
+    </div>
+     <div class = "option-select">
+      <span class= "label">Board Size</span>
+      <select id="board-size">
+        <option data-x="8" data-y="8">8x8</option>
+        <option data-x="16" data-y="16">16x16</option>
+        <option data-x="30" data-y="16">32x16</option>
+      </select>
+    </div>
+    <span class = "option-checkbox">
+      <input type="checkbox" class="option-input" checked="checked" id="show-timer">Show Timer</input>
+    </span>
   </div>
-  <div class ="option-button">
-    <button id = "cheat">Help Me</buton>
-  </div>
-  <div class = "option-select">
-    <span class="label">Difficulty</span>
-    <select id="difficulty">
-      <option value="easy">Beginner</option>
-      <option value = "middle">Intermediate</option>
-      <option value = "hard">Expert</option>
-    </select>
-  </div>
-   <div class = "option-select">
-    <span class= "label">Board Size</span>
-    <select id="board-size">
-      <option data-x="8" data-y="8">8x8</option>
-      <option data-x="16" data-y="16">16x16</option>
-      <option data-x="30" data-y="16">32x16</option>
-    </select>
-  </div>
-  <input type="checkbox" class="option-input" checked="checked" id="show-timer">Show Timer</input>
 </div>
 <div id ="board">
   <h1>Welcome to Minesweeper</h1>

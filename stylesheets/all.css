@@ -1,25 +1,35 @@
 @charset "utf-8";
 
+body, html {
+  width:100%;
+  height:100%;
+}
 body {
   background-color: #444;
-  text-align: center;
   font-family: sans-serif; 
   margin:0;
   padding:0;
 }
 
-h1 {
+h1, h2 {
   color: rgba(0, 0, 0, .6);
   font-size: 32px;
   letter-spacing: -1px;
   text-shadow: 0 1px 0 rgba(255, 255, 255, .2);
-  padding: 50px 0 10px;
   margin: 0; 
 }
 
-select {
+h2 {
+  padding-top:20px;
+  font-size:20px;
+}
+
+select, button {
   cursor: pointer;
 }
+
+
+
 
 #board, #minesweeper, .game-buttons {
   -webkit-animation-name: board;
@@ -81,28 +91,53 @@ select {
   }
 }
 
-#options{
-  width:300px;
-  position:absolute;
-  left:0;
+#option-wrap {
+  width:100%;
   background-color: rgba(255, 255, 255, .8);
-  height:100%;
-  text-align:left;
-  padding-left:60px;
-  border-right: 1px solid rgba(0,0,0,.4);
-  box-shadow: 5px 0px 20px rgba(0,0,0,.2);
+  border-bottom: 1px solid rgba(0,0,0,.4);
+  box-shadow: 0px 5px 20px rgba(0,0,0,.2);
 }
+
+#options{
+  max-width:750px;
+  margin:auto;
+  padding:20px 0;
+  text-align:left;
+  min-height:1.5em;
+  line-height:1.5em;
+  font-size:.9em;
+}
+
+#show-timer {
+  margin-right:6px;
+}
+
 #board{
-  margin-left:300px;
+  width:100%;
 }
 
 #board h1{
+  text-align:center;
   color:rgba(255,255,255,.9);
   text-shadow: 1px 1px 2px rgba(0,0,0,.2);
+  margin-top:5%;
 }
+
+#options h1{
+  display:inline-block;
+  vertical-align:bottom;
+}
+.option-button, .option-select {
+  display:inline-block;
+  vertical-align:bottom;
+  padding: 0px 10px;
+}
+
 #minesweeper{
-  width:auto;
-  margin: 3em auto 0 auto;
+  text-align:center;
+  width:640px;
+  margin: 5% auto 0 auto;
+  padding-bottom:5%;
   padding-top:10px;
   background-color:rgba(255,255,255,.1);
   border: 1px solid rgba(0,0,0,.4);
@@ -213,36 +248,27 @@ select {
 
 /* Game Options */
 
-#new-game, #cheat {
-  line-height:1.6em;
+#new-game{
   cursor:pointer;
-}
-
-
-
-.option-button, .option-select{
-  padding-top:30px;
-}
-
-.option-select{
-  clear:both;
-}
-
-.option-button {
-  float:left;
-  padding-right:20px;
-}
-
-.option-input{
-  display: inline-block;
-  margin-top:30px;
-  margin-right:6px;
-}
-
-#options select {
-  margin-left:6px;
 }
 
 .hidden{
   visibility:hidden;
+}
+
+
+@media screen and (max-width: 800px) {
+
+  #options{
+    width:275px;
+    margin:auto;
+  }
+  .option-button, .option-select, .option-checkbox {
+    display:none;
+  }
+
+  #new-button {
+    display:inline-block;
+  }
+  
 }

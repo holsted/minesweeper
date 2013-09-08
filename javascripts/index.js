@@ -202,14 +202,6 @@ $(document).ready(function(){
       self.stopTimer = true;
     }
 
-    this.cheat = function(){
-     
-      $('.mine').toggleClass('show');
-      setTimeout(function(){
-        $('.mine').toggleClass('show');
-      },1000);
-    }
-
     this.reset = function(){
       self.init();
     }
@@ -387,11 +379,6 @@ $(document).ready(function(){
   });
 
   // add event listeners for the options panel
-
-  $('#cheat').on('click', function(){
-    console.log('cheated');
-    minesweeper.cheat();
-  });
 
   $('#new-game').on('click', function(){
      minesweeper.reset();
