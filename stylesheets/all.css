@@ -125,6 +125,16 @@ select, button {
   display:inline-block;
   vertical-align:bottom;
 }
+
+.options li {
+
+}
+
+.options li a {
+  text-decoration:none;
+
+}
+
 .option-button, .option-select {
   display:inline-block;
   vertical-align:bottom;
