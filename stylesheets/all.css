@@ -279,3 +279,20 @@ select, button {
   }
   
 }
+
+@media screen and (max-device-width: 480px) {
+  #options{
+    width:275px;
+    margin:auto;
+  }
+  .option-button, .option-select, .option-checkbox {
+    display:none;
+  }
+
+  #new-button {
+    display:inline-block;
+  }
+  
+}
+
+
