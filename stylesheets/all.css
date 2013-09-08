@@ -267,30 +267,32 @@ select, button {
 @media screen and (max-width: 800px) {
 
   #options{
-    width:275px;
-    margin:auto;
+    text-align:center;
   }
   .option-button, .option-select, .option-checkbox {
     display:none;
   }
 
   #new-button {
-    display:inline-block;
+    display:block;
+    clear:both;
+    padding-top:15px;
   }
   
 }
 
 @media screen and (max-device-width: 480px) {
   #options{
-    width:275px;
-    margin:auto;
+    text-align:center;
   }
   .option-button, .option-select, .option-checkbox {
     display:none;
   }
 
   #new-button {
-    display:inline-block;
+    display:block;
+    clear:both;
+    padding-top:15px;
   }
   
 }
