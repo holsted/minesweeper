@@ -14,42 +14,39 @@
     <link href="stylesheets/normalize.css" media="screen" rel="stylesheet" type="text/css" />
     <script src="javascripts/index.js" type="text/javascript"></script>
   </head>
-  <div id="option-wrap">
-   <div id= "options">
-    <a href = "/"><h1>FajitaNachos</h1></a>
-      <div id = "new-button" class = 'option-button'>
-        <button id= "new-game">New Game</button>
+  <body>
+    <div id="option-wrap">
+      <div id= "options">
+        <a href = "/"><h1>FajitaNachos</h1></a>
+        <div id = "new-button" class = 'option-button'>
+          <button id= "new-game">New Game</button>
+        </div>
+        <div class = "option-select">
+          <span class="label">Difficulty</span>
+          <select id="difficulty">
+            <option value="easy">Beginner</option>
+            <option value = "middle">Intermediate</option>
+            <option value = "hard">Expert</option>
+          </select>
+        </div>
+        <div class = "option-select">
+          <span class= "label">Board Size</span>
+          <select id="board-size">
+            <option data-x="8" data-y="8">8x8</option>
+            <option data-x="16" data-y="16">16x16</option>
+            <option data-x="30" data-y="16">32x16</option>
+          </select>
+       </div>
+        <span class = "option-checkbox">
+          <input type="checkbox" class="option-input" checked="checked" id="show-timer">Show Timer</input>
+        </span>
       </div>
-    <div class = "option-select">
-      <span class="label">Difficulty</span>
-      <select id="difficulty">
-        <option value="easy">Beginner</option>
-        <option value = "middle">Intermediate</option>
-        <option value = "hard">Expert</option>
-      </select>
     </div>
-     <div class = "option-select">
-      <span class= "label">Board Size</span>
-      <select id="board-size">
-        <option data-x="8" data-y="8">8x8</option>
-        <option data-x="16" data-y="16">16x16</option>
-        <option data-x="30" data-y="16">32x16</option>
-      </select>
+    <div id ="board">
+      <h1>Welcome to Minesweeper</h1>
+      <div id = "minesweeper">
+      </div>
     </div>
-    <span class = "option-checkbox">
-      <input type="checkbox" class="option-input" checked="checked" id="show-timer">Show Timer</input>
-    </span>
-  </div>
-</div>
-<div id ="board">
-  <h1>Welcome to Minesweeper</h1>
-  <div id = "minesweeper">
-
-  </div>
-
-</div>
-
-</div>
   <script>
       var _gaq=[['_setAccount','UA-34699920-1'],['_trackPageview']];
       (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
