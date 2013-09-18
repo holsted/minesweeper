@@ -108,7 +108,7 @@ select, button {
 }
 
 .flagged {
-  background: #fff url('../images/red_flag.png') no-repeat center;
+  background: #fff url('../img/red_flag.png') no-repeat center;
 }
 
 
@@ -123,15 +123,15 @@ select, button {
 }
 
 .cool-smiley {
-   background: url('../images/smiley_cool.png') no-repeat center;
+   background: url('../img/smiley_cool.png') no-repeat center;
 }
 
 .happy-smiley {
-   background: url('../images/smiley_happy.png') no-repeat center;
+   background: url('../img/smiley_happy.png') no-repeat center;
 }
 
 .sad-smiley {
-   background: url('../images/smiley_sad.png') no-repeat center;
+   background: url('../img/smiley_sad.png') no-repeat center;
 }
 
 .mine{
@@ -139,7 +139,7 @@ select, button {
 }
 
 .show {
-  background: #fff url("../images/mine.png") no-repeat center;
+  background: #fff url("../img/mine.png") no-repeat center;
 }
 
 #ui{
@@ -204,6 +204,28 @@ select, button {
 }
 
 
+/*Tic Tac Toe*/
+
+#tic-tac-toe {
+  text-align:center;
+  position:absolute;
+  bottom:20px;
+  left:20px;
+}
+
+#tic-tac-toe a {
+  color: #777;
+  text-shadow:1px 0px #222;
+  text-decoration:none;
+}
+
+#tic-tac-toe a:hover {
+  color: #eee;
+  text-shadow:none;
+  text-decoration:none;
+}
+
+
 @media screen and (max-width: 800px) {
 
   #options{
@@ -218,8 +240,18 @@ select, button {
     clear:both;
     padding-top:15px;
   }
+
+  #tic-tac-toe{
+    text-align:center;
+    position:relative;
+    margin-top:20%;
+    left:auto;
+    right:auto;
+  }
   
 }
+
+
 
 @media screen and (max-device-width: 480px) {
   #options{
