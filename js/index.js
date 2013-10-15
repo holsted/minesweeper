@@ -1,7 +1,6 @@
 $(document).ready(function(){
 
   function Game() {
-    var game = this;
     // initialize our cell object
     this.cells = [];
     this.active = true;
@@ -13,51 +12,64 @@ $(document).ready(function(){
 
   Game.prototype = {
 
-    setup: function(options){
-      var that = this;
-      // empty the cell object if it has anything in it
-      cells = [];
+  setup: function(options){
+    var that = this;
+    
+    // empty the cell object if it has anything in it
+    cells = [];
 
-      //remove the old board if there is one, detach event listeners as well
-      $('#minesweeper').empty();
+    //remove the old board if there is one, detach event listeners as well
+    $('#minesweeper').empty();
 
-      if (typeof options == 'object') {
-        options = $.extend(this.defaultOptions, options);
-      } else {
-        options = this.defaultOptions;
-      }
+    if (typeof options == 'object') {
+      options = $.extend(this.defaultOptions, options);
+    } else {
+      options = this.defaultOptions;
+    }
 
-      this.difficulty = options.difficulty;
+    this.difficulty = options.difficulty;
+    var x = options.boardSize[0];
+    var y = options.boardSize[1];
+    game.width = x;
+    
+    this.addUI();
 
-      var x = options.boardSize[0];
-      var y = options.boardSize[1];
-      game.width = x;
-      this.addUI();
-      this.board = new Board();
-      this.board.draw(x,y,function(){
-       // set the width and height of our minesweeper container based on how many columns we have 
-        var cellWidth = $('.cell').outerWidth();
-        var uiHeight = $('#ui').outerHeight();
-        $('#minesweeper').width(cellWidth*x).height(cellWidth*y+uiHeight);
-        $('.cell').css('cursor', 'pointer');
-      
-        // add event listeners for our newly created cells
-        that.board.setHandlers();
-        // add the mines to our grid 
-        that.board.setMines(game.difficulty);
-      });
+    this.board = new Board(x,y);
+
+    this.board.draw(function(){
+      // this a callback from the board.draw method call
+     // it sets the width and height of our minesweeper container based on how many columns we have 
+      var cellWidth = $('.cell').outerWidth();
+      var uiHeight = $('#ui').outerHeight();
+
+      $('#minesweeper').width(cellWidth*x).height(cellWidth*y+uiHeight);
+
+      $('.cell').css('cursor', 'pointer');
+    
+      // add event listeners for our newly created cells. Have to use 'that' because we are in the inner function
+      that.board.setHandlers();
+
+      // add the mines to our board
+      that.board.setMines(game.difficulty);
+
+    });
 
       this.timer = new Timer();
     },
 
     gameOver: function(){
+
+      game.active = false;
+
       $('.cell').css('cursor', 'default');
+
       $('#minesweeper .mine').toggleClass('show');
+
       $('#check-me').attr('class', 'sad-smiley');
       
       //lock the game board so the user can't click on any cells 
      $('.cell').off();
-      game.active = false;
+     
     },
 
     reset: function(){
@@ -90,26 +102,29 @@ $(document).ready(function(){
         id: 'check-me',
         class: 'happy-smiley'
       });
+
       var mineCount = $('<div/>').attr('id', 'mine-count');
       var timer = $('<div/>').attr('id', 'timer').html('0');
    
       var ui = $('<div/>').attr('id','ui');
-      ui.append(mineCount);
-      ui.append(timer);
-      ui.append(checkMe);
+      
+      ui.append(mineCount).append(timer).append(checkMe);
       gameBoard.append(ui);
     }
   }
 
-  function Board(){
-   
+  function Board(x,y){
+    this.columns = x;
+    this.rows = y;
   }
 
   Board.prototype = {
 
-    draw: function(columns,rows,callback){
+    draw: function(callback){
       var rowDiv;
       var id = 0;
+      var rows = this.rows;
+      var columns = this.columns;
       // build a containg div for each row, and then populate each row with the correct
       // number of cells to fill out our grid
 
@@ -120,7 +135,7 @@ $(document).ready(function(){
         }).appendTo($('#minesweeper'));
 
         for (var x=0; x<=columns-1; x++){
-          var currentCell = new Cell(id, x, y);
+          var currentCell = new Cell(id);
           cells.push(currentCell);  
           var cell = $('<div/>').attr({
             'id' : id ++,
@@ -128,7 +143,6 @@ $(document).ready(function(){
           }).appendTo(rowDiv);
           // add the cell to the cells array so we can access it later instead of 
           // looping through the DOM
-         
         }
       }
       callback();
@@ -167,7 +181,6 @@ $(document).ready(function(){
            i--;
         }
         else{
-
           // place mine
           cells[cellId].hasMine = true;
           $('#'+cellId).addClass('mine');
@@ -228,7 +241,6 @@ $(document).ready(function(){
           game.reset();
         }
         else{
-          
           game.check();
         }
       });
@@ -236,10 +248,8 @@ $(document).ready(function(){
   }
     
 
-  function Cell(id, x, y) {
+  function Cell(id) {
     this.id = id;
-    this.x = x;
-    this.y = y;
     this.hasMine = false;
     this.flagged = false;
     this.cleared = false;
@@ -296,73 +306,58 @@ $(document).ready(function(){
 
         // We are not on the top row. So get the cell above us (Top)
         var top = id - width;
-        neighbors.push(top);
-        if(cells[top].hasMine){
-          bombs += 1;
-        }
+        check(top);
 
         // before we get the Top Right cell, check that we aren't on the far right edge of the board
         if(((top + 1) % width) !== 0){
           var topRight = top + 1;
-          neighbors.push(topRight);
-          if(cells[topRight].hasMine){
-            bombs += 1;
-          }
+          check(topRight);
         }
 
         // do the same with the Top Left cell
         if((top % width) !== 0){
           var topLeft = top - 1;
-          neighbors.push(topLeft);
-          if(cells[topLeft].hasMine){
-            bombs += 1;
-          }
+          check(topLeft);
         }
       }
 
       // if the cell id is evenly divisble by the width, then we are on the left edge
       if(id % width !== 0){
         var left = id - 1;
-        neighbors.push(left);
-        if(cells[left].hasMine){
-          bombs += 1;
-        }
+        check(left);
       }
 
       // if the cell id + 1 is evenly divisible by the width, then we are on the right edge
       if((id + 1) % width !== 0){
         var right = id + 1;
-        neighbors.push(right);
-        if(cells[right].hasMine){
-          bombs += 1;
-        }
+        check(right);
       }
 
       // if the cell id + the width of the grid is < the total number of cells, we are not on the bottom row
       if(id + width < cells.length){
         var bottom = id + width;
-        neighbors.push(bottom);
-        if(cells[bottom].hasMine){
-          bombs += 1;
-        }
+        check(bottom);
       
         // check that we aren't on the right edge of the board
         if((bottom + 1) % width !== 0){
           var bottomRight = bottom + 1;
-          neighbors.push(bottomRight);
-          if(cells[bottomRight].hasMine){
-            bombs += 1;
-          }
+          check(bottomRight);
         }
 
         // check that we aren't on the left edge of the board
         if(bottom % width != 0){
           var bottomLeft = bottom - 1;
-          neighbors.push(bottomLeft);
-          if(cells[bottomLeft].hasMine){
+          check(bottomLeft);
+        }
+      }
+
+      function check(id){
+        if(cells[id].hasMine){
             bombs += 1;
           }
-        }
+          else{
+            neighbors.push(id);
+          }
       }
 
       var cellData = {
@@ -408,7 +403,6 @@ $(document).ready(function(){
 
   $('#new-game').on('click', function(){
      game.reset();
-     
   });
 
   $('#difficulty').change(function(){
