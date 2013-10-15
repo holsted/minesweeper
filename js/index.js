@@ -1,44 +1,91 @@
 $(document).ready(function(){
 
-  var Minesweeper = function(){
-    var self = this;
-    var defaultOptions = {
+  function Game() {
+    var game = this;
+    // initialize our cell object
+    this.cells = [];
+    this.active = true;
+    this.defaultOptions = {
       boardSize: [8, 8],
       difficulty: 'easy'
     }
-    
-    // initialize our cell object
-    var cells;
-    
-    this.init = function(options){
+  }
+
+  Game.prototype = {
+
+    setup: function(options){
+      var that = this;
       // empty the cell object if it has anything in it
       cells = [];
-      if (typeof options == 'object') {
-        options = $.extend(defaultOptions, options);
-      } else {
-        options = defaultOptions;
-      }
-      self.difficulty = options.difficulty;
 
-      // setup a new game
-      self.newGame(options.boardSize);
-    };
-
-    this.newGame = function (boardSize){
       //remove the old board if there is one, detach event listeners as well
       $('#minesweeper').empty();
 
-      var x = boardSize[0];
-      var y = boardSize[1];
-      self.width = x;
-      
-      //setup our new board
-      self.addUI();
-      self.buildGrid(x, y);
-    }
+      if (typeof options == 'object') {
+        options = $.extend(this.defaultOptions, options);
+      } else {
+        options = this.defaultOptions;
+      }
 
-    this.addUI = function(){
-      var board = $('#minesweeper');
+      this.difficulty = options.difficulty;
+
+      var x = options.boardSize[0];
+      var y = options.boardSize[1];
+      game.width = x;
+      this.addUI();
+      this.board = new Board();
+      this.board.draw(x,y,function(){
+       // set the width and height of our minesweeper container based on how many columns we have 
+        var cellWidth = $('.cell').outerWidth();
+        var uiHeight = $('#ui').outerHeight();
+        $('#minesweeper').width(cellWidth*x).height(cellWidth*y+uiHeight);
+        $('.cell').css('cursor', 'pointer');
+      
+        // add event listeners for our newly created cells
+        that.board.setHandlers();
+        // add the mines to our grid 
+        that.board.setMines(game.difficulty);
+      });
+
+      this.timer = new Timer();
+    },
+
+    gameOver: function(){
+      $('.cell').css('cursor', 'default');
+      $('#minesweeper .mine').toggleClass('show');
+      $('#check-me').attr('class', 'sad-smiley');
+      
+      //lock the game board so the user can't click on any cells 
+     $('.cell').off();
+      game.active = false;
+    },
+
+    reset: function(){
+      this.setup();
+    },
+
+    check: function(){
+      var loser;
+      $.each(cells, function(index){
+        if (cells[index].cleared == false && cells[index].hasMine == false){
+          game.gameOver();
+          alert('Looks like you missed a few...');
+          loser = true;
+          return false;
+        }
+      });
+      if(!loser){
+        game.win();
+      }
+    },
+
+    win: function(){
+      $('#check-me').attr('class','cool-smiley');
+      alert("Winner!")
+    },
+
+    addUI: function(){
+      var gameBoard = $('#minesweeper');
       var checkMe = $('<div/>').attr({
         id: 'check-me',
         class: 'happy-smiley'
@@ -50,50 +97,45 @@ $(document).ready(function(){
       ui.append(mineCount);
       ui.append(timer);
       ui.append(checkMe);
-      board.append(ui);
+      gameBoard.append(ui);
     }
+  }
 
-    this.buildGrid = function(columns, rows) {
+  function Board(){
+   
+  }
+
+  Board.prototype = {
+
+    draw: function(rows,columns,callback){
       var rowDiv;
       var id = 0;
-
       // build a containg div for each row, and then populate each row with the correct
       // number of cells to fill out our grid
-      for (var i=0; i<=rows-1; i++){
+
+      for (var y=0; y<=rows-1; y++){
         rowDiv = $('<div/>').attr({
-          id : 'row'+i,
+          id : 'row'+y,
           class : 'row'
         }).appendTo($('#minesweeper'));
 
-        for (var j=0; j<=columns-1; j++){
+        for (var x=0; x<=columns-1; x++){
+          var currentCell = new Cell(id, x, y);
+          cells.push(currentCell);  
           var cell = $('<div/>').attr({
             'id' : id ++,
             'class' : 'cell'
           }).appendTo(rowDiv);
           // add the cell to the cells array so we can access it later instead of 
           // looping through the DOM
-          cells.push({
-            hasMine: false,
-            flagged: false,
-            cleared: false
-          });
+         
         }
       }
+      console.log(cells);
+      callback();
+    },
 
-      // set the width and height of our minesweeper container based on how many columns we have 
-      var cellWidth = $('.cell').outerWidth();
-      var uiHeight = $('#ui').outerHeight();
-      $('#minesweeper').width(cellWidth*columns).height(cellWidth*rows+uiHeight);
-      $('.cell').css('cursor', 'pointer');
-      
-      // add event listeners for our newly created cells
-      self.setHandlers();
-
-      // add the mines to our grid 
-      self.setMines(self.difficulty);
-    }
-
-    this.setMines = function(difficulty){
+    setMines: function(difficulty){
 
       // the number of mines is different for each difficulty level
       switch(difficulty){
@@ -111,7 +153,7 @@ $(document).ready(function(){
       var numberOfCells = cells.length;
       var maxCellId = numberOfCells -1;
       var numberOfMines = Math.round(numberOfCells/mineDensity);
-      self.mineCount = numberOfMines;
+      game.mineCount = numberOfMines;
 
       $('#mine-count').html(numberOfMines);
       
@@ -132,25 +174,26 @@ $(document).ready(function(){
           $('#'+cellId).addClass('mine');
         }
       }
-    }
+    },
 
     
-    this.setHandlers = function(){
+    setHandlers: function(){
       
       var firstClick = true;
       $('.cell').on('click', function(){
         //start the timer only on the first click
         if(firstClick){
-          self.startTimer();
+          game.timer.start();
           firstClick = false;
         }
         var id = this.id;
+        alert(id);
         if(cells[id].hasMine){
-          self.gameOver();
+          game.gameOver();
           $(this).css('background-color','#ff0000');
         }
         else{
-          self.clearCell(id);
+          cells[id].clear();
         }
         
       });
@@ -162,8 +205,8 @@ $(document).ready(function(){
           cell.removeClass('flagged');
           cells[id].flagged = false;
           cells[id].checked = false;
-          self.mineCount ++;
-          $('#mine-count').html(self.mineCount);
+          game.mineCount ++;
+          $('#mine-count').html(game.mineCount);
           return false;
         }
         else{
@@ -173,8 +216,8 @@ $(document).ready(function(){
           else{
             cell.addClass('flagged');
             cells[id].flagged = true;
-            self.mineCount = self.mineCount -1;
-            $('#mine-count').html(self.mineCount);
+            game.mineCount = game.mineCount -1;
+            $('#mine-count').html(game.mineCount);
             return false;
           }
         }
@@ -184,55 +227,71 @@ $(document).ready(function(){
 
       $('#check-me').on('click', function(){
         if($(this).hasClass('sad-smiley')){
-          self.reset();
+          game.reset();
         }
         else{
-        self.check();
+          
+          game.check();
         }
       });
-     }
+     },
+  }
+    
 
-    this.gameOver = function(){
-      $('.cell').css('cursor', 'default');
-      $('#minesweeper .mine').toggleClass('show');
-      $('#check-me').attr('class', 'sad-smiley');
-      
-      //lock the game board so the user can't click on any cells 
-     $('.cell').off();
-      self.stopTimer = true;
-    }
+  function Cell(id, x, y) {
+    this.id = id;
+    this.x = x;
+    this.y = y;
+    this.hasMine = false;
+    this.flagged = false;
+    this.cleared = false;
+    
+  }
 
-    this.reset = function(){
-      self.init();
-    }
-
-    this.check = function(){
-      var loser;
-      $.each(cells, function(index){
-        if (cells[index].cleared == false && cells[index].hasMine == false){
-          self.gameOver();
-          alert('Looks like you missed a few...');
-          loser = true;
-          return false;
-        }
-      });
-      if(!loser){
-        self.win();
+  Cell.prototype = {
+    
+    clear: function(){
+      var id = this.id;
+      if(this.checked){
+        // been here before...
       }
-    }
+      else{
+        // make sure there isn't flag on this cell before we clear it
+        if(this.flagged == false){
+          
+          $('#'+id).addClass('cleared');
+          this.checked = true;
+          this.cleared = true;
 
-    this.win = function(){
-      $('#check-me').attr('class','cool-smiley');
-      alert("Winner!")
-    }
+          var neighbors = this.getNeighbors();
+          if(neighbors.bombs > 0){
+            $('#'+id).html(neighbors.bombs);
+            $('#'+id).addClass("number"+neighbors.bombs);
+          }
+          else{
+            $('#'+id).addClass('cleared');
+            $.each(neighbors.cells, function(index, value){
+              if(cells[value].hasMine){
+              }
+              else{
+                cells[value].clear();
+              }
+            });
+          } 
+        }
+        else{
+          cells[id].checked = true;
+        }
+      }
+    },
 
-    this.getNeighbors = function(cellId){
+    getNeighbors: function(){
       var neighbors = new Array();
-      var neighborBombs = 0;
-      var width = self.width;
+      var bombs = 0;
+      var width = game.width;
       
       // need to fix this. It was just a hack to make sure we had an integer not a string
-      var id = +cellId;
+      var id = this.id;
       
       // If we are on the top row, the id - width will always be < 0
       if(id - width > 0){
@@ -241,7 +300,7 @@ $(document).ready(function(){
         var top = id - width;
         neighbors.push(top);
         if(cells[top].hasMine){
-          neighborBombs += 1;
+          bombs += 1;
         }
 
         // before we get the Top Right cell, check that we aren't on the far right edge of the board
@@ -249,7 +308,7 @@ $(document).ready(function(){
           var topRight = top + 1;
           neighbors.push(topRight);
           if(cells[topRight].hasMine){
-            neighborBombs += 1;
+            bombs += 1;
           }
         }
 
@@ -258,7 +317,7 @@ $(document).ready(function(){
           var topLeft = top - 1;
           neighbors.push(topLeft);
           if(cells[topLeft].hasMine){
-            neighborBombs += 1;
+            bombs += 1;
           }
         }
       }
@@ -268,7 +327,7 @@ $(document).ready(function(){
         var left = id - 1;
         neighbors.push(left);
         if(cells[left].hasMine){
-          neighborBombs += 1;
+          bombs += 1;
         }
       }
 
@@ -277,7 +336,7 @@ $(document).ready(function(){
         var right = id + 1;
         neighbors.push(right);
         if(cells[right].hasMine){
-          neighborBombs += 1;
+          bombs += 1;
         }
       }
 
@@ -286,7 +345,7 @@ $(document).ready(function(){
         var bottom = id + width;
         neighbors.push(bottom);
         if(cells[bottom].hasMine){
-          neighborBombs += 1;
+          bombs += 1;
         }
       
         // check that we aren't on the right edge of the board
@@ -294,7 +353,7 @@ $(document).ready(function(){
           var bottomRight = bottom + 1;
           neighbors.push(bottomRight);
           if(cells[bottomRight].hasMine){
-            neighborBombs += 1;
+            bombs += 1;
           }
         }
 
@@ -303,25 +362,31 @@ $(document).ready(function(){
           var bottomLeft = bottom - 1;
           neighbors.push(bottomLeft);
           if(cells[bottomLeft].hasMine){
-            neighborBombs += 1;
+            bombs += 1;
           }
         }
       }
 
       var cellData = {
         cells : neighbors,
-        bombs : neighborBombs
+        bombs : bombs
       }
 
       return cellData;
     }
+  }
 
-    this.startTimer = function(){
-      self.stopTimer = null;
+  function Timer(){
+
+  }
+
+  Timer.prototype = {
+
+    start: function(){
       var time = 0;
       $('#timer').html(time);
       (function tick(){
-        if(self.stopTimer){
+        if(!game.active){
           clearTimeout(moreTime);
         }
         else{
@@ -330,50 +395,13 @@ $(document).ready(function(){
           var moreTime=setTimeout(tick, 1000);
         }
       })();
-    }
-
-    this.clearCell = function(cellId){
-     
-      if(cells[cellId].checked){
-        // been here before...
-      }
-      else{
-
-        // make sure there isn't flag on this cell before we clear it
-        if(cells[cellId].flagged == false){
-          
-          $('#'+cellId).addClass('cleared');
-          cells[cellId].checked = true;
-          cells[cellId].cleared = true;
-
-          var neighbors = self.getNeighbors(cellId);
-          if(neighbors.bombs > 0){
-            $('#'+cellId).html(neighbors.bombs);
-            $('#'+cellId).addClass("number"+neighbors.bombs);
-          }
-          else{
-            $('#'+cellId).addClass('cleared');
-            $.each(neighbors.cells, function(index, value){
-              if(cells[value].hasMine){
-              
-              }
-              else{
-                self.clearCell(value);
-              }
-            });
-          } 
-        }
-        else{
-          cells[cellId].checked = true;
-        }
-      }
-    }
+    }   
   }
 
  
-  var minesweeper = new Minesweeper();
+  var game = new Game();
  
-  minesweeper.init({
+  game.setup({
     boardSize: [8, 8],
     difficulty: 'easy'
   });
@@ -381,12 +409,12 @@ $(document).ready(function(){
   // add event listeners for the options panel
 
   $('#new-game').on('click', function(){
-     minesweeper.reset();
-     minesweeper.stopTimer = true;
+     game.reset();
+     
   });
 
   $('#difficulty').change(function(){
-    minesweeper.init({
+    game.setup({
       difficulty : $(this).val()
     });
   });
@@ -395,7 +423,7 @@ $(document).ready(function(){
     var selected = $(this).find('option:selected');
     var x = selected.data('x'); 
     var y = selected.data('y'); 
-    minesweeper.init({boardSize : [x,y]});
+    game.setup({boardSize : [x,y]});
   })
 
   $('#show-timer').change(function(){
