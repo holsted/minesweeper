@@ -107,7 +107,7 @@ $(document).ready(function(){
 
   Board.prototype = {
 
-    draw: function(rows,columns,callback){
+    draw: function(columns,rows,callback){
       var rowDiv;
       var id = 0;
       // build a containg div for each row, and then populate each row with the correct
