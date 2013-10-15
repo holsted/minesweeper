@@ -131,7 +131,6 @@ $(document).ready(function(){
          
         }
       }
-      console.log(cells);
       callback();
     },
 
@@ -187,7 +186,6 @@ $(document).ready(function(){
           firstClick = false;
         }
         var id = this.id;
-        alert(id);
         if(cells[id].hasMine){
           game.gameOver();
           $(this).css('background-color','#ff0000');
